@@ -6,8 +6,6 @@ export type TDay = {
   isCurrent: boolean
 }
 
-export type TWeek = TDay[]
-
 export type TMonth = {
   title: string
   weeks: Map<string, TDay>[]

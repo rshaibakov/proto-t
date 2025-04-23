@@ -1,4 +1,4 @@
-import type { TDay, TDayResponse, TWeek } from "./types"
+import type { TDay, TDayResponse } from "./types"
 
 export function getMonthWeeks(date: Date, checkedDates: Map<string, TDayResponse>): Map<string, TDay>[] {
   const year = date.getFullYear()
