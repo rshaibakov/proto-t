@@ -4,6 +4,7 @@ export type TDay = {
   value: number
   status: TDayStatus
   isCurrent: boolean
+  outOfMonth: boolean
 }
 
 export type TMonth = {

@@ -1,5 +1,7 @@
 import type { TDay, TDayResponse } from "./types"
 
+const currentDateKey = getKeyByDate(new Date())
+
 export function getMonthWeeks(date: Date, checkedDates: Map<string, TDayResponse>): Map<string, TDay>[] {
   const year = date.getFullYear()
   const month = date.getMonth()
@@ -20,24 +22,26 @@ export function getMonthWeeks(date: Date, checkedDates: Map<string, TDayResponse
   const endDate = new Date(lastDay)
   endDate.setDate(lastDay.getDate() + (7 - lastDay.getDay()) % 7)
 
-  const current = new Date(startDate)
+  const cursorDate = new Date(startDate)
 
-  while (current <= endDate) {
-    const currentKey = getKeyByDate(current)
+  while (cursorDate <= endDate) {
+    const cursorDateKey = getKeyByDate(cursorDate)
+
     const day = {
-      value: current.getDate(),
-      status: checkedDates.get(currentKey)?.status ?? 'idle',
-      isCurrent: current.getMonth() === month
+      value: cursorDate.getDate(),
+      status: checkedDates.get(cursorDateKey)?.status ?? 'idle',
+      isCurrent: cursorDateKey === currentDateKey,
+      outOfMonth: cursorDate.getMonth() === month,
     }
 
-    week.set(currentKey, day)
+    week.set(cursorDateKey, day)
 
     if (week.size === 7) {
       weeks.push(week)
       week = new Map()
     }
 
-    current.setDate(current.getDate() + 1)
+    cursorDate.setDate(cursorDate.getDate() + 1)
   }
 
   return weeks

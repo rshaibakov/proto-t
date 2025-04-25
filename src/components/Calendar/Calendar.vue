@@ -29,7 +29,8 @@
           v-for="[dayKey, day] in week"
           :key="dayKey"
           :label="day.value"
-          :out-of-month="!day.isCurrent"
+          :sub-label="day.isCurrent ? 'Сегодня' : undefined"
+          :out-of-month="!day.outOfMonth"
           :status="checkedDates?.get(dayKey)?.status"
           @update:status="(status) => onDayStatusChange(dayKey, status)"
         />
@@ -92,14 +93,14 @@ const months = computed<TMonth[]>(() => {
   const result = []
 
   for (let i = 0; i < totalMonths; i++) {
-    const currentDate = new Date(startDate.getFullYear(), startDate.getMonth() + i, 1)
+    const date = new Date(startDate.getFullYear(), startDate.getMonth() + i, 1)
 
     result.push({
-      title: currentDate.toLocaleString('ru-RU', {
+      title: date.toLocaleString('ru-RU', {
         month: 'long',
         year: 'numeric'
       }).replace(' г.', ''),
-      weeks: getMonthWeeks(currentDate, checkedDates.value)
+      weeks: getMonthWeeks(date, checkedDates.value)
     })
   }
 

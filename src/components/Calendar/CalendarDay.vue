@@ -16,7 +16,16 @@
       />
     </template>
 
-    <span class="label">{{ label }}</span>
+    <span class="label">
+      {{ label }}
+    </span>
+
+    <small
+      v-if="subLabel"
+      class="sub-label"
+    >
+      {{ subLabel }}
+    </small>
   </label>
 </template>
 
@@ -27,6 +36,7 @@ import type { TDayStatus } from './types';
 
 type TDayProps = {
   label: string | number
+  subLabel?: string
   outOfMonth?: boolean
 }
 
@@ -56,7 +66,7 @@ const status = defineModel<TDayStatus>('status', { default: 'idle' })
 }
 
 .day:is([data-out-of-month="true"]) {
-  color: light-dark(var(--pico-color-slate-300), var(--pico-color-slate-700));
+  color: light-dark(var(--pico-color-slate-400), var(--pico-color-slate-700));
 }
 
 .day:has(.field:is([value="done"]):checked) {
@@ -89,10 +99,20 @@ const status = defineModel<TDayStatus>('status', { default: 'idle' })
   z-index: 1;
 }
 
+.sub-label {
+  position: absolute;
+  display: inline-block;
+  inset-block-end: 0;
+  inset-inline-start: 0;
+  width: 100%;
+  font-size: 10px;
+  text-align: center;
+  color: var(--pico-muted-color);
+}
+
 .field {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
   border: none;
   background-color: transparent;
   border-radius: var(--pico-border-radius);
