@@ -108,6 +108,9 @@ const status = defineModel<TDayStatus>('status', { default: 'idle' })
   font-size: 10px;
   text-align: center;
   color: var(--pico-muted-color);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .field {
