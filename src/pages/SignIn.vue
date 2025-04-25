@@ -2,7 +2,10 @@
 import { db } from '../db'
 
 db.auth.signInWithOAuth({
-  provider: 'google'
+  provider: 'google',
+  options: {
+    redirectTo: location.origin,
+  },
 })
 </script>
 

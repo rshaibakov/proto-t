@@ -111,34 +111,46 @@ const months = computed<TMonth[]>(() => {
 <style scoped>
 .calendar {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));
-  gap: var(--pico-block-spacing-vertical);
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-xl);
+}
+
+@media (width > 576px) {
+  .calendar {
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  }
+}
+
+@media (width > 1280px) {
+  .calendar {
+    grid-template-columns: repeat(3, minmax(360px, 1fr));
+  }
 }
 
 .month {
   display: flex;
   flex-direction: column;
-  gap: var(--pico-block-spacing-vertical);
+  gap: var(--space-lg);
 }
 
 .title {
-  color: var(--pico-primary);
+  color: var(--pico-h2-color);
 }
 
 .week {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: var(--pico-grid-column-gap);
+  gap: var(--space-lg);
 }
 
 .week:where([data-is-header]) {
   border-radius: var(--pico-border-radius);
-  background-color: var(--pico-color-slate-800);
+  background-color: light-dark(var(--pico-color-slate-100), var(--pico-color-slate-800));
 }
 
 .day-of-week {
-  padding-block: var(--pico-block-spacing-vertical);
-  padding-inline: var(--pico-block-spacing-horizontal);
+  padding-block: var(--space-md);
+  padding-inline: var(--space-sm);
   text-align: center;
 }
 </style>

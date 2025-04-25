@@ -43,18 +43,20 @@ const status = defineModel<TDayStatus>('status', { default: 'idle' })
   cursor: pointer;
   position: relative;
   width: auto;
-  padding-block: var(--pico-block-spacing-vertical);
-  padding-inline: var(--pico-block-spacing-horizontal);
+  padding-block: var(--space-md);
+  padding-inline: var(--space-md);
   border-radius: var(--pico-border-radius);
 }
 
-.day:hover {
-  background-color: var(--pico-contrast-background);
-  color: var(--pico-contrast-inverse);
+@media(hover: hover) {
+  .day:hover {
+    background-color: var(--pico-contrast-background);
+    color: var(--pico-contrast-inverse);
+  }
 }
 
 .day:is([data-out-of-month="true"]) {
-  color: var(--pico-color-slate-700);
+  color: light-dark(var(--pico-color-slate-300), var(--pico-color-slate-700));
 }
 
 .day:has(.field:is([value="done"]):checked) {
@@ -62,19 +64,24 @@ const status = defineModel<TDayStatus>('status', { default: 'idle' })
   color: var(--pico-color-green-50);
 }
 
-.day:has(.field:is([value="done"]):checked):hover {
-  background-color: var(--pico-color-green-600);
-  color: var(--pico-color-green-50);
+@media(hover: hover) {
+  .day:has(.field:is([value="done"]):checked):hover {
+    background-color: var(--pico-color-green-600);
+    color: var(--pico-color-green-50);
+  }
 }
+
 
 .day:has(.field:is([value="failed"]):checked) {
   background-color: var(--pico-color-pink-500);
   color: var(--pico-color-pink-50);
 }
 
-.day:has(.field:is([value="failed"]):checked):hover {
-  background-color: var(--pico-color-pink-450);
-  color: var(--pico-color-pink-50);
+@media(hover: hover) {
+  .day:has(.field:is([value="failed"]):checked):hover {
+    background-color: var(--pico-color-pink-450);
+    color: var(--pico-color-pink-50);
+  }
 }
 
 .label {
