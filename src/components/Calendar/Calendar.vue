@@ -2,7 +2,7 @@
 <template>
   <section class="calendar">
     <article
-      v-for="(month, monthKey) in months"
+      v-for="[monthKey, month] in months"
       :key="monthKey"
       class="month"
     >
@@ -24,17 +24,13 @@
         </div>
       </div>
 
-      <div
-        v-for="(week, weekKey) in month.weeks"
-        :key="weekKey"
-        class="week"
-      >
+      <div class="days">
         <CalendarDay
-          v-for="[dayKey, day] in week"
+          v-for="[dayKey, day] in month.days"
           :key="dayKey"
           :label="day.value"
           :sub-label="day.isCurrent ? 'Сегодня' : undefined"
-          :out-of-month="!day.outOfMonth"
+          :disabled="day.isBeforeStart || day.isAfterFinish"
           :status="checkedDates?.get(dayKey)?.status"
           @update:status="(status) => onDayStatusChange(dayKey, status)"
         />
@@ -44,11 +40,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watchEffect } from 'vue'
-import { activityId, daysOfWeek, startDate, totalMonths } from './const'
+import { ref, watchEffect } from 'vue'
+import { activityId, daysOfWeek, startDate } from './const'
 import CalendarDay from './CalendarDay.vue'
-import type { TDayResponse, TDayStatus, TDayUpsertPayload, TMonth } from './types'
-import { getMonthWeeks } from './utils'
+import type { TDayResponse, TDayStatus, TDayUpsertPayload } from './types'
+import { getDaysByMonths } from './utils'
 import { db } from '../../db'
 
 const checkedDates = ref<Map<string, TDayResponse>>(new Map())
@@ -93,23 +89,7 @@ const onDayStatusChange = async (date: string, status: TDayStatus) => {
   }
 }
 
-const months = computed<TMonth[]>(() => {
-  const result = []
-
-  for (let i = 0; i < totalMonths; i++) {
-    const date = new Date(startDate.getFullYear(), startDate.getMonth() + i, 1)
-
-    result.push({
-      title: date.toLocaleString('ru-RU', {
-        month: 'long',
-        year: 'numeric'
-      }).replace(' г.', ''),
-      weeks: getMonthWeeks(date, checkedDates.value)
-    })
-  }
-
-  return result
-})
+const months = getDaysByMonths(startDate)
 
 </script>
 
@@ -147,15 +127,12 @@ const months = computed<TMonth[]>(() => {
   margin: 0;
 }
 
-.week {
+.days {
+  padding-block: 0 var(--space-lg);
   padding-inline: var(--space-lg);
   display: grid;
   grid-template-columns: repeat(7, minmax(auto, 1fr));
   gap: var(--space-lg);
-}
-
-.week:last-child {
-  padding-block-end: var(--space-lg);
 }
 
 .days-of-week {

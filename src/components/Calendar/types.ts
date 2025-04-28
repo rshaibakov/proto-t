@@ -2,14 +2,15 @@ export type TDayStatus = 'idle' | 'done' | 'failed'
 
 export type TDay = {
   value: number
-  status: TDayStatus
+  dayOfWeek: number,
   isCurrent: boolean
-  outOfMonth: boolean
+  isBeforeStart: boolean
+  isAfterFinish: boolean
 }
 
 export type TMonth = {
   title: string
-  weeks: Map<string, TDay>[]
+  days: Map<string, TDay>
 }
 
 export type TDayResponse = {

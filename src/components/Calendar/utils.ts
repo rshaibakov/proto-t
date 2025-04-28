@@ -1,53 +1,51 @@
-import type { TDay, TDayResponse } from "./types"
+import { totalMonths } from "./const"
+import type { TMonth } from "./types"
 
-const currentDateKey = getKeyByDate(new Date())
+export function getDaysByMonths(startDate: Date) {
+  const months = new Map<string, TMonth>()
+  const finishDate = new Date(startDate)
+  finishDate.setMonth(startDate.getMonth() + totalMonths)
 
-export function getMonthWeeks(date: Date, checkedDates: Map<string, TDayResponse>): Map<string, TDay>[] {
-  const year = date.getFullYear()
-  const month = date.getMonth()
-  const weeks = []
-  let week = new Map()
+  const currentDate = new Date()
+  currentDate.setHours(0, 0, 0, 0)
 
-  // Первый день месяца
-  const firstDay = new Date(year, month, 1)
+  const lastDate = new Date(finishDate.getFullYear(), finishDate.getMonth() + 1, 0)
+  const cursorDate = new Date(startDate.getFullYear(), startDate.getMonth(), 1)
 
-  // Последний день месяца
-  const lastDay = new Date(year, month + 1, 0)
+  while (cursorDate <= lastDate) {
+    const monthKey = getMonthKey(cursorDate)
 
-  // Начало первой недели (понедельник)
-  const startDate = new Date(firstDay)
-  startDate.setDate(firstDay.getDate() - (firstDay.getDay() + 6) % 7)
-
-  // Конец последней недели (воскресенье)
-  const endDate = new Date(lastDay)
-  endDate.setDate(lastDay.getDate() + (7 - lastDay.getDay()) % 7)
-
-  const cursorDate = new Date(startDate)
-
-  while (cursorDate <= endDate) {
-    const cursorDateKey = getKeyByDate(cursorDate)
-
-    const day = {
-      value: cursorDate.getDate(),
-      status: checkedDates.get(cursorDateKey)?.status ?? 'idle',
-      isCurrent: cursorDateKey === currentDateKey,
-      outOfMonth: cursorDate.getMonth() === month,
-    }
-
-    week.set(cursorDateKey, day)
-
-    if (week.size === 7) {
-      weeks.push(week)
-      week = new Map()
+    if (!months.has(monthKey)) {
+      months.set(monthKey, {
+        title: cursorDate.toLocaleString('ru-RU', {
+          month: 'long',
+          year: 'numeric'
+        }).replace(' г.', ''),
+        days: new Map(),
+      })
+    } else {
+      months.get(monthKey)?.days.set(getDayKey(cursorDate), {
+        value: cursorDate.getDate(),
+        dayOfWeek: cursorDate.getDay(),
+        isCurrent: cursorDate.getTime() === currentDate.getTime(),
+        isBeforeStart: cursorDate.getTime() <= startDate.getTime(),
+        isAfterFinish: cursorDate.getTime() > finishDate.getTime(),
+      })
     }
 
     cursorDate.setDate(cursorDate.getDate() + 1)
   }
 
-  return weeks
+  return months
 }
 
-function getKeyByDate(date: Date) {
+function getMonthKey(date: Date) {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  return `${year}-${month}-01`
+}
+
+function getDayKey(date: Date) {
   const year = date.getFullYear()
   const month = String(date.getMonth() + 1).padStart(2, '0')
   const day = String(date.getDate()).padStart(2, '0')

@@ -2,9 +2,9 @@
 <template>
   <label
     class="day"
-    :data-out-of-month="outOfMonth"
+    :data-disabled="disabled"
   >
-    <template v-if="!outOfMonth">
+    <template v-if="!disabled">
       <input
         v-for="dayStatus in dayStatuses"
         v-model="status"
@@ -37,7 +37,7 @@ import type { TDayStatus } from './types';
 type TDayProps = {
   label: string | number
   subLabel?: string
-  outOfMonth?: boolean
+  disabled?: boolean
 }
 
 defineProps<TDayProps>()
@@ -52,7 +52,6 @@ const status = defineModel<TDayStatus>('status', { default: 'idle' })
   container-type: size;
   box-sizing: border-box;
   margin: 0;
-  cursor: pointer;
   position: relative;
   width: auto;
   aspect-ratio: 1 / 1;
@@ -63,13 +62,14 @@ const status = defineModel<TDayStatus>('status', { default: 'idle' })
 }
 
 @media(hover: hover) {
-  .day:hover {
+  .day:not([data-disabled="true"]):hover {
+    cursor: pointer;
     background-color: var(--pico-contrast-background);
     color: var(--pico-contrast-inverse);
   }
 }
 
-.day:is([data-out-of-month="true"]) {
+.day:is([data-disabled="true"]) {
   color: light-dark(var(--pico-color-slate-400), var(--pico-color-slate-700));
 }
 
