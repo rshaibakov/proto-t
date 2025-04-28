@@ -48,13 +48,17 @@ const status = defineModel<TDayStatus>('status', { default: 'idle' })
 
 <style scoped>
 .day {
+  container-name: day;
+  container-type: size;
+  box-sizing: border-box;
   margin: 0;
-  text-align: center;
   cursor: pointer;
   position: relative;
   width: auto;
-  padding-block: var(--space-md);
-  padding-inline: var(--space-md);
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: var(--pico-border-radius);
 }
 
@@ -97,6 +101,7 @@ const status = defineModel<TDayStatus>('status', { default: 'idle' })
 .label {
   position: relative;
   z-index: 1;
+  font-size: clamp(1rem, 50cqw, 4rem);
 }
 
 .sub-label {

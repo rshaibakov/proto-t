@@ -6,18 +6,22 @@
       :key="monthKey"
       class="month"
     >
-      <h2 class="title">
-        {{ month.title }}
-      </h2>
+      <header class="header">
+        <h2 class="title">
+          {{ month.title }}
+        </h2>
+      </header>
 
-      <div class="week" data-is-header>
-        <strong
+      <div class="days-of-week">
+        <div
           v-for="day in daysOfWeek"
           :key="day"
           class="day-of-week"
         >
-          {{ day }}
-        </strong>
+          <strong>
+            {{ day }}
+          </strong>
+        </div>
       </div>
 
       <div
@@ -111,47 +115,66 @@ const months = computed<TMonth[]>(() => {
 
 <style scoped>
 .calendar {
+  --month-columns: auto-fit;
+
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(var(--month-columns), minmax(320px, 1fr));
   gap: var(--space-xl);
 }
 
-@media (width > 576px) {
+@media (width > 1600px) {
   .calendar {
-    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-  }
-}
-
-@media (width > 1280px) {
-  .calendar {
-    grid-template-columns: repeat(3, minmax(360px, 1fr));
+    --month-columns: 4;
   }
 }
 
 .month {
+  padding: 0;
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);
 }
 
+.header {
+  padding-inline: var(--space-lg);
+  background-color: transparent;
+  border: none;
+  margin: 0;
+}
+
 .title {
   color: var(--pico-h2-color);
+  margin: 0;
 }
 
 .week {
+  padding-inline: var(--space-lg);
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, minmax(auto, 1fr));
   gap: var(--space-lg);
 }
 
-.week:where([data-is-header]) {
-  border-radius: var(--pico-border-radius);
+.week:last-child {
+  padding-block-end: var(--space-lg);
+}
+
+.days-of-week {
+  padding-inline: var(--space-lg);
+  display: grid;
+  grid-template-columns: repeat(7, minmax(auto, 1fr));
+  gap: var(--space-lg);
   background-color: light-dark(var(--pico-color-slate-100), var(--pico-color-slate-800));
 }
 
 .day-of-week {
+  container-type: inline-size;
   padding-block: var(--space-md);
   padding-inline: var(--space-sm);
   text-align: center;
+}
+
+.day-of-week strong {
+  font-size: clamp(1rem, 2cqw, 2rem);
+  text-wrap: nowrap;
 }
 </style>
