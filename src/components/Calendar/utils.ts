@@ -19,19 +19,19 @@ export function getDaysByMonths(startDate: Date) {
       months.set(monthKey, {
         title: cursorDate.toLocaleString('ru-RU', {
           month: 'long',
-          year: 'numeric'
+          year: 'numeric',
         }).replace(' г.', ''),
         days: new Map(),
       })
-    } else {
-      months.get(monthKey)?.days.set(getDayKey(cursorDate), {
-        value: cursorDate.getDate(),
-        dayOfWeek: cursorDate.getDay(),
-        isCurrent: cursorDate.getTime() === currentDate.getTime(),
-        isBeforeStart: cursorDate.getTime() <= startDate.getTime(),
-        isAfterFinish: cursorDate.getTime() > finishDate.getTime(),
-      })
     }
+
+    months.get(monthKey)?.days.set(getDayKey(cursorDate), {
+      value: cursorDate.getDate(),
+      dayOfWeek: cursorDate.getDay(),
+      isCurrent: cursorDate.getTime() === currentDate.getTime(),
+      isBeforeStart: cursorDate.getTime() <= startDate.getTime(),
+      isAfterFinish: cursorDate.getTime() > finishDate.getTime(),
+    })
 
     cursorDate.setDate(cursorDate.getDate() + 1)
   }

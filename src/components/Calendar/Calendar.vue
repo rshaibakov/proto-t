@@ -27,6 +27,8 @@
       <div class="days">
         <CalendarDay
           v-for="[dayKey, day] in month.days"
+          class="day"
+          :data-day-of-week="day.dayOfWeek"
           :key="dayKey"
           :label="day.value"
           :sub-label="day.isCurrent ? 'Сегодня' : undefined"
@@ -133,6 +135,34 @@ const months = getDaysByMonths(startDate)
   display: grid;
   grid-template-columns: repeat(7, minmax(auto, 1fr));
   gap: var(--space-lg);
+}
+
+.day:first-child:is([data-day-of-week="1"]) {
+  grid-column-start: 1;
+}
+
+.day:first-child:is([data-day-of-week="2"]) {
+  grid-column-start: 2;
+}
+
+.day:first-child:is([data-day-of-week="3"]) {
+  grid-column-start: 3;
+}
+
+.day:first-child:is([data-day-of-week="4"]) {
+  grid-column-start: 4;
+}
+
+.day:first-child:is([data-day-of-week="5"]) {
+  grid-column-start: 5;
+}
+
+.day:first-child:is([data-day-of-week="6"]) {
+  grid-column-start: 6;
+}
+
+.day:first-child:is([data-day-of-week="0"]) {
+  grid-column-start: 7;
 }
 
 .days-of-week {
