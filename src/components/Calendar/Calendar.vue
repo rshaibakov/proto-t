@@ -2,9 +2,11 @@
 <template>
   <section class="calendar">
     <CalendarMonth
-      v-for="[monthKey, month] in months"
+      v-for="([monthKey, month], index) in months"
       :key="monthKey"
       :month="month"
+      :is-first="index === 0"
+      :is-last="index === months.size - 1"
       :checked-dates="checkedDates"
     />
   </section>
@@ -43,7 +45,7 @@ const months = getDaysByMonths(startDate)
   --month-columns: auto-fit;
 
   display: grid;
-  grid-template-columns: minmax(320px, 640px);
-  gap: var(--space-xl);
+  grid-template-columns: minmax(320px, 580px);
+  gap: 1rem;
 }
 </style>

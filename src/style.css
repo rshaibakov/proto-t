@@ -7,4 +7,8 @@
   --space-lg: 12px;
   --space-xl: 16px;
   --space-2xl: 20px;
+  --space-3xl: 24px;
+  --space-4xl: 32px;
+
+  --border-radius-round: calc(infinity * 1px);
 }
