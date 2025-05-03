@@ -28,3 +28,5 @@ export type TDayUpsertPayload = {
   activity_id: string
   user_id?: string
 }
+
+export type TCheckedDates = Map<string, TDayResponse>
