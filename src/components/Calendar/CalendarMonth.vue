@@ -79,6 +79,8 @@ const onDayStatusChange = async (date: string, status: TDayStatus) => {
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);
+  background: transparent;
+  box-shadow: none;
 }
 
 .header {
@@ -98,7 +100,7 @@ const onDayStatusChange = async (date: string, status: TDayStatus) => {
   padding-inline: var(--space-lg);
   display: grid;
   grid-template-columns: repeat(7, minmax(auto, 1fr));
-  gap: var(--space-lg);
+  gap: var(--space-xl);
 }
 
 .day:first-child:is([data-day-of-week="1"]) {
@@ -134,7 +136,8 @@ const onDayStatusChange = async (date: string, status: TDayStatus) => {
   display: grid;
   grid-template-columns: repeat(7, minmax(auto, 1fr));
   gap: var(--space-lg);
-  background-color: light-dark(var(--pico-color-slate-100), var(--pico-color-slate-800));
+  background-color: light-dark(var(--pico-color-slate-150), var(--pico-color-slate-800));
+  border-radius: calc(infinity * 1px);
 }
 
 .day-of-week {

@@ -41,8 +41,7 @@ const status = defineModel<TDayStatus>('status', { default: 'idle' })
 
 <style scoped>
 .day {
-  container-name: day;
-  container-type: size;
+  container: day / size;
   box-sizing: border-box;
   margin: 0;
   position: relative;
@@ -51,14 +50,16 @@ const status = defineModel<TDayStatus>('status', { default: 'idle' })
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--pico-border-radius);
+  border-radius: calc(infinity * 1px);
 }
 
 @media(hover: hover) {
-  .day:not([data-disabled="true"]):hover {
+  .day:not([data-disabled="true"]):hover,
+  .day:not([data-disabled="true"]):focus-within {
     cursor: pointer;
-    background-color: var(--pico-contrast-background);
-    color: var(--pico-contrast-inverse);
+    outline: .25cqw solid light-dark(var(--pico-color-slate-150), var(--pico-color-slate-800));
+    outline-offset: 0;
+    color: var(--pico-contrast);
   }
 }
 
@@ -72,8 +73,9 @@ const status = defineModel<TDayStatus>('status', { default: 'idle' })
 }
 
 @media(hover: hover) {
-  .day:has(.field:is([value="done"]):checked):hover {
-    background-color: var(--pico-color-green-600);
+  .day:has(.field:is([value="done"]):checked):hover,
+  .day:has(.field:is([value="done"]):checked):focus-within {
+    background-color: var(--pico-color-green-500);
     color: var(--pico-color-green-50);
   }
 }
@@ -85,7 +87,8 @@ const status = defineModel<TDayStatus>('status', { default: 'idle' })
 }
 
 @media(hover: hover) {
-  .day:has(.field:is([value="failed"]):checked):hover {
+  .day:has(.field:is([value="failed"]):checked):hover,
+  .day:has(.field:is([value="failed"]):checked):focus-within {
     background-color: var(--pico-color-pink-450);
     color: var(--pico-color-pink-50);
   }
@@ -94,19 +97,25 @@ const status = defineModel<TDayStatus>('status', { default: 'idle' })
 .label {
   position: relative;
   z-index: 1;
-  font-size: clamp(1rem, 50cqw, 4rem);
+  font-size: clamp(1rem, 40cqw, 4rem);
 }
 
 .field {
   position: absolute;
   inset: 0;
   border: none;
+  display: inline-block;
   background-color: transparent;
-  border-radius: var(--pico-border-radius);
+  border-radius: inherit;
   margin: 0;
   width: 100%;
   height: 100%;
   background-image: none !important;
+}
+
+.field:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 .field:first-child {

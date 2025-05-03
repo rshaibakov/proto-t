@@ -43,13 +43,7 @@ const months = getDaysByMonths(startDate)
   --month-columns: auto-fit;
 
   display: grid;
-  grid-template-columns: repeat(var(--month-columns), minmax(320px, 1fr));
+  grid-template-columns: minmax(320px, 640px);
   gap: var(--space-xl);
-}
-
-@media (width > 1600px) {
-  .calendar {
-    --month-columns: 4;
-  }
 }
 </style>
