@@ -19,13 +19,6 @@
     <span class="label">
       {{ label }}
     </span>
-
-    <small
-      v-if="subLabel"
-      class="sub-label"
-    >
-      {{ subLabel }}
-    </small>
   </label>
 </template>
 
@@ -102,20 +95,6 @@ const status = defineModel<TDayStatus>('status', { default: 'idle' })
   position: relative;
   z-index: 1;
   font-size: clamp(1rem, 50cqw, 4rem);
-}
-
-.sub-label {
-  position: absolute;
-  display: inline-block;
-  inset-block-end: 0;
-  inset-inline-start: 0;
-  width: 100%;
-  font-size: 10px;
-  text-align: center;
-  color: var(--pico-muted-color);
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
 }
 
 .field {

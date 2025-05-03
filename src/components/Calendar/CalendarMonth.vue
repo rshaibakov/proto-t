@@ -26,7 +26,6 @@
         :data-day-of-week="day.dayOfWeek"
         :key="dayKey"
         :label="day.value"
-        :sub-label="day.isCurrent ? 'Сегодня' : undefined"
         :disabled="day.isBeforeStart || day.isAfterFinish"
         :status="checkedDates?.get(dayKey)?.status"
         @update:status="(status) => onDayStatusChange(dayKey, status)"
