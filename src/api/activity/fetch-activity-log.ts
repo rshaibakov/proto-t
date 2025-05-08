@@ -1,5 +1,4 @@
 import { api } from '../client'
-import type { TActivityLogItem } from './types'
 
 export async function fetchActivityLog(activityId: string) {
   const { data, error } = await api.from('activities_log')
