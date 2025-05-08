@@ -13,4 +13,4 @@ export type TMonth = {
   days: Map<string, TDay>
 }
 
-export type TCheckedDates = Map<string, TActivityLogItem>
+export type TCheckedDays = Map<string, TActivityLogItem>

@@ -1,10 +1,9 @@
-import { totalMonths } from "./const"
 import type { TMonth } from "./types"
 
-export function getDaysByMonths(startDate: Date) {
+export function getDaysByMonths(startDate: Date, daysToComplete: number) {
   const months = new Map<string, TMonth>()
   const finishDate = new Date(startDate)
-  finishDate.setMonth(startDate.getMonth() + totalMonths)
+  finishDate.setDate(startDate.getDate() + daysToComplete)
 
   const currentDate = new Date()
   currentDate.setHours(0, 0, 0, 0)

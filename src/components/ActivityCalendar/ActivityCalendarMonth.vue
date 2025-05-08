@@ -44,7 +44,7 @@
         :label="day.value"
         :today="day.isCurrent"
         :disabled="day.isBeforeStart || day.isAfterFinish"
-        :status="checkedDates?.get(dayKey)?.status"
+        :status="checkedDays?.get(dayKey)?.status"
         @update:status="(status) => onDayStatusChange(dayKey, status)"
       />
     </div>
@@ -56,13 +56,13 @@ import { inject } from 'vue'
 import ActivityCalendarDay from './ActivityCalendarDay.vue'
 import ActivityCalendarBalloon from './ActivityCalendarBalloon.vue'
 import { daysOfWeek } from './const'
-import type { TCheckedDates, TMonth } from './types'
+import type { TCheckedDays, TMonth } from './types'
 import type { TActivityLogItemStatus } from '../../api/activity/types'
 import { upsertActivityLog, type TActivityLogItemUpsertPayload } from '../../api/activity/upsert-activity-log'
 
 type TActivityCalendarMonthProps = {
   month: TMonth
-  checkedDates: TCheckedDates
+  checkedDays: TCheckedDays
   isFirst: boolean
   isLast: boolean
 }
@@ -82,14 +82,14 @@ const onDayStatusChange = async (date: string, status: TActivityLogItemStatus) =
     activity_id: activityId,
   }
 
-  if (props.checkedDates.get(date)?.id) {
-    payload.id = props.checkedDates.get(date)?.id
+  if (props.checkedDays.get(date)?.id) {
+    payload.id = props.checkedDays.get(date)?.id
   }
 
-  const data = await upsertActivityLog(payload)
+  const response = await upsertActivityLog(payload)
 
-  if (data) {
-    props.checkedDates.set(data[0].date, data[0])
+  if (response) {
+    props.checkedDays.set(response[0].date, response[0])
   }
 }
 </script>

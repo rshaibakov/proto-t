@@ -1,16 +1,18 @@
 <script setup lang="ts">
+import { inject } from 'vue'
 import ActivityCalendarMonth from './ActivityCalendarMonth.vue'
-import type { TCheckedDates } from './types'
+import type { TCheckedDays } from './types'
 import { getDaysByMonths } from './utils'
 
 type TActivityCalendarProps = {
   startDate: Date
-  checkedDates: TCheckedDates
+  checkedDays: TCheckedDays
 }
 
 const props = defineProps<TActivityCalendarProps>()
 
-const months = getDaysByMonths(props.startDate)
+const daysToComplete = inject<number>('daysToComplete')
+const months = getDaysByMonths(props.startDate, daysToComplete ?? 0)
 </script>
 
 <template>
@@ -19,19 +21,17 @@ const months = getDaysByMonths(props.startDate)
       v-for="([monthKey, month], index) in months"
       :key="monthKey"
       :month="month"
-      :is-first="index === 0"
-      :is-last="index === months.size - 1"
-      :checked-dates="checkedDates"
+      :isFirst="index === 0"
+      :isLast="index === months.size - 1"
+      :checkedDays="checkedDays"
     />
   </section>
 </template>
 
 <style scoped>
 .calendar {
-  --month-columns: auto-fit;
-
-  display: grid;
-  grid-template-columns: minmax(320px, 580px);
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
 }
 </style>
