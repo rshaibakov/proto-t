@@ -1,22 +1,22 @@
 import { createWebHistory, createRouter } from 'vue-router'
 
-import { db } from './db'
-import Home from './pages/Home.vue'
+import { api } from './api/client'
+import Activity from './pages/Activity.vue'
 import SignIn from './pages/SignIn.vue'
 import NotFound from './pages/NotFound.vue'
 
 const routes = [
   {
-    name: 'Home',
+    name: 'Activity',
     path: '/',
-    component: Home,
+    component: Activity,
   },
   {
     name: 'SignIn',
     path: '/signin',
     component: SignIn,
     beforeEnter: async () => {
-      const { data } = await db.auth.getSession()
+      const { data } = await api.auth.getSession()
       const isAuthenticated = !!data.session
 
       if (isAuthenticated) {
@@ -37,7 +37,7 @@ export const router = createRouter({
 })
 
 router.beforeEach(async (to) => {
-  const { data } = await db.auth.getSession()
+  const { data } = await api.auth.getSession()
   const isAuthenticated = !!data.session
 
   if (!isAuthenticated && to.name !== 'SignIn') {

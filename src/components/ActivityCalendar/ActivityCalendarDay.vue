@@ -29,18 +29,18 @@
 import { useId } from 'vue'
 import ArrowtIcon from '../../assets/icons/arrow_drop_up.svg?component'
 import { dayStatuses } from './const';
-import type { TDayStatus } from './types';
+import type { TActivityLogItemStatus } from '../../api/activity/types';
 
-type TDayProps = {
+type TActivityCalendarDayProps = {
   label: string | number
   today?: boolean
   disabled?: boolean
 }
 
-defineProps<TDayProps>()
+defineProps<TActivityCalendarDayProps>()
 
 const fieldName = useId()
-const status = defineModel<TDayStatus>('status', { default: 'idle' })
+const status = defineModel<TActivityLogItemStatus>('status', { default: 'idle' })
 </script>
 
 <style scoped>

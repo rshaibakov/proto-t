@@ -14,11 +14,11 @@
 import StartIcon from '../../assets/icons/rocket_launch.svg?component'
 import FinishIcon from '../../assets/icons/sports_score.svg?component'
 
-type TBalloonProps = {
+type TActivityCalendarBalloonProps = {
   type?: 'start' | 'finish'
 }
 
-defineProps<TBalloonProps>()
+defineProps<TActivityCalendarBalloonProps>()
 </script>
 
 <style scoped>

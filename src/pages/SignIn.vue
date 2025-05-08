@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { db } from '../db'
+import { api } from '../api/client'
 
-db.auth.signInWithOAuth({
+api.auth.signInWithOAuth({
   provider: 'google',
   options: {
     redirectTo: location.origin,

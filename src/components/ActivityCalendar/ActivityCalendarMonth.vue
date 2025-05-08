@@ -1,15 +1,15 @@
 
 <template>
   <article class="month">
-    <CalendarBalloon
+    <ActivityCalendarBalloon
       v-if="isFirst"
       type="start"
       class="balloon"
     />
 
-    <CalendarBalloon v-else class="balloon" />
+    <ActivityCalendarBalloon v-else class="balloon" />
 
-    <CalendarBalloon
+    <ActivityCalendarBalloon
       v-if="isLast"
       type="finish"
       class="balloon"
@@ -36,7 +36,7 @@
     </div>
 
     <div class="days">
-      <CalendarDay
+      <ActivityCalendarDay
         v-for="[dayKey, day] in month.days"
         class="day"
         :data-day-of-week="day.dayOfWeek"
@@ -52,23 +52,31 @@
 </template>
 
 <script setup lang="ts">
-import CalendarDay from './CalendarDay.vue'
-import CalendarBalloon from './CalendarBalloon.vue'
-import { activityId, daysOfWeek } from './const'
-import type { TCheckedDates, TDayStatus, TDayUpsertPayload, TMonth } from './types'
-import { db } from '../../db'
+import { inject } from 'vue'
+import ActivityCalendarDay from './ActivityCalendarDay.vue'
+import ActivityCalendarBalloon from './ActivityCalendarBalloon.vue'
+import { daysOfWeek } from './const'
+import type { TCheckedDates, TMonth } from './types'
+import type { TActivityLogItemStatus } from '../../api/activity/types'
+import { upsertActivityLog, type TActivityLogItemUpsertPayload } from '../../api/activity/upsert-activity-log'
 
-type TMonthProps = {
+type TActivityCalendarMonthProps = {
   month: TMonth
   checkedDates: TCheckedDates
   isFirst: boolean
   isLast: boolean
 }
 
-const props = defineProps<TMonthProps>()
+const props = defineProps<TActivityCalendarMonthProps>()
 
-const onDayStatusChange = async (date: string, status: TDayStatus) => {
-  const payload: TDayUpsertPayload = {
+const activityId = inject<string>('activityId')
+
+const onDayStatusChange = async (date: string, status: TActivityLogItemStatus) => {
+  if (!activityId) {
+    throw Error('Not found activity')
+  }
+
+  const payload: TActivityLogItemUpsertPayload = {
     date,
     status,
     activity_id: activityId,
@@ -78,17 +86,10 @@ const onDayStatusChange = async (date: string, status: TDayStatus) => {
     payload.id = props.checkedDates.get(date)?.id
   }
 
-  const { data, error } = await db
-    .from('activities_log')
-    .upsert(payload)
-    .select()
+  const data = await upsertActivityLog(payload)
 
   if (data) {
     props.checkedDates.set(data[0].date, data[0])
-  }
-
-  if (error) {
-    console.error(error)
   }
 }
 </script>
